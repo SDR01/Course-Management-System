@@ -3,8 +3,8 @@ package com.cms.usecases;
 import java.util.Scanner;
 
 import com.cms.bean.Faculty;
-import com.cms.dao.FacultyDao;
-import com.cms.dao.FacultyDaoImpl;
+import com.cms.dao.AdminDao;
+import com.cms.dao.AdminDaoImpl;
 
 public class RegisterFaculty {
 
@@ -34,7 +34,7 @@ public class RegisterFaculty {
 		String password = sc.next();
 		
 		
-		FacultyDao fDao = new FacultyDaoImpl();
+		AdminDao aDao = new AdminDaoImpl();
 		
 		Faculty faculty = new Faculty();
 		faculty.setFacultyid(facultyid);
@@ -45,7 +45,7 @@ public class RegisterFaculty {
 		faculty.setUsername(username);
 		faculty.setPassword(password);
 		
-		String result = fDao.registerFaculty(faculty);
+		String result = aDao.registerFaculty(faculty);
 		System.out.println(result);
 		
 	}

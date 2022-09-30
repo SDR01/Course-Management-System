@@ -5,6 +5,7 @@ import java.util.Scanner;
 import com.cms.bean.Administrator;
 import com.cms.dao.AdminDao;
 import com.cms.dao.AdminDaoImpl;
+import com.cms.exceptions.AdminException;
 
 
 
@@ -22,9 +23,14 @@ public class AdminLogin {
 		
 		AdminDao aDao = new AdminDaoImpl();
 	
-		Administrator admin = aDao.loginAdmin(username, password);
+		try {
+			Administrator admin = aDao.loginAdmin(username, password);
 			
-		System.out.println("Welcome");
+			System.out.println("Welcom "+ username);
+			
+		} catch (AdminException e) {
+			System.out.println(e.getMessage());
+		}
 			
 	}
 
