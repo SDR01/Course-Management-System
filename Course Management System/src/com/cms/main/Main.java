@@ -11,6 +11,8 @@ import com.cms.usecases.AllocateFacultyToBatch;
 import com.cms.usecases.CreateBatch;
 import com.cms.usecases.CreateCourse;
 import com.cms.usecases.CreateCoursePlan;
+import com.cms.usecases.GenerateReport;
+import com.cms.usecases.GetDayWiseUpdateOfBatch;
 import com.cms.usecases.LoginFaculty;
 import com.cms.usecases.RegisterFaculty;
 import com.cms.usecases.UpdateBatchByID;
@@ -203,14 +205,14 @@ public class Main {
 						}
 						case 18:
 						{
-							UpdateCoursePlanByID updateCoursePlanByID = new UpdateCoursePlanByID();
-							updateCoursePlanByID.main(args);
+							GetDayWiseUpdateOfBatch getDayWiseUpdateOfBatch = new GetDayWiseUpdateOfBatch();
+							getDayWiseUpdateOfBatch.main(args);
 							break;
 						}
 						case 19:
 						{
-							ViewCoursePlanList viewCoursePlanList = new ViewCoursePlanList();
-							viewCoursePlanList.main(args);
+							GenerateReport generateReport = new GenerateReport();
+							generateReport.main(args);
 							break;
 						}
 						case 20:
