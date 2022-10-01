@@ -16,10 +16,11 @@ public class RegisterFaculty {
 		int facultyid = sc.nextInt();
 		
 		System.out.println("Enter Faculty Name:");
-		String facultyname = sc.next();
+		sc.nextLine();
+		String facultyname = sc.nextLine();
 		
 		System.out.println("Enter Faculty Address:");
-		String facultyaddress = sc.next();
+		String facultyaddress = sc.nextLine();
 		
 		System.out.println("Enter Faculty Mobile Number:");
 		String facultymobile = sc.next();

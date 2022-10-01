@@ -2,6 +2,7 @@ package com.cms.usecases;
 
 import java.util.Scanner;
 
+import com.cms.bean.Batch;
 import com.cms.dao.AdminDao;
 import com.cms.dao.AdminDaoImpl;
 
@@ -11,14 +12,22 @@ public class AllocateFacultyToBatch {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("Enter Course ID:");
-		int cid = sc.nextInt();
 		System.out.println("Enter Faculty ID:");
 		int fid = sc.nextInt();
+		System.out.println("Enter Batch ID:");
+		int bid = sc.nextInt();
 		
 		AdminDao adminDao = new AdminDaoImpl();
 		
-		String result = adminDao.allocateFacultyToBatch(cid, fid);
+		Batch batch = new Batch();
+		batch.setBatchId(bid);
+		batch.setFacultyId(fid);
+		batch.getCourseId();
+		batch.getNoOfStudents();
+		batch.getDate();
+		batch.getDuration();
+		
+		String result = adminDao.allocateFacultyToBatch(batch);
 		
 		System.out.println(result);
 		
