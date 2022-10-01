@@ -657,6 +657,53 @@ String message = "Not Updated";
 		return message;
 	}
 
+	@Override
+	public String generateReport() {
+		
+		String message = "";
+		
+		try(Connection conn=DBUtil.provideConnection()){
+			
+			PreparedStatement ps=conn.prepareStatement(
+					"select a.batchid, a.numberofstudent, a.batchstartdate, a.duration, b.facultyname, c.courseid, c.coursename, d.daynumber, d.topic, d.status from batch a, faculty b, course c, courseplan d where a.facultyid = b.facultyid AND a.courseid = c.courseid AND a.batchid = d.batchid;"
+				);
+				
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				int bid = rs.getInt("batchid");
+				int num = rs.getInt("numberofstudent");
+				String date = rs.getString("batchstartdate");
+				String duration = rs.getString("duration");
+				String fname = rs.getString("facultyname");
+				int cid = rs.getInt("courseid");
+				String cname = rs.getString("coursename");
+				int day = rs.getInt("daynumber");
+				String topic = rs.getString("topic");
+				String status = rs.getString("status");
+				
+				System.out.println("Batch ID: " + bid);
+				System.out.println("Number of Students: " + num);
+				System.out.println("Date: " + date);
+				System.out.println("Duration: " + duration);
+				System.out.println("Faculty Name: " + fname);
+				System.out.println("Course ID: " + cid);
+				System.out.println("Course Name: " + cname);
+				System.out.println("Day: " + day);
+				System.out.println("Topic: " + topic);
+				System.out.println("Status: " + status);
+				System.out.println("-------------------------------------------");
+			}
+			
+		} catch (SQLException e) {
+			message = e.getMessage();
+		}
+		
+		
+		return message;
+	}
+
 
 
 

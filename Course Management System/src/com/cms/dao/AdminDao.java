@@ -53,5 +53,5 @@ public interface AdminDao {
 	
 	public String dayWiseUpdate();
 	
-	
+	public String generateReport();
 }
