@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cms.bean.Administrator;
 import com.cms.bean.Batch;
@@ -207,7 +209,7 @@ public class AdminDaoImpl implements AdminDao{
 	}
 
 	@Override
-	public String allocateFacultyToBatch(int cid, int fid) {
+	public String allocateFacultyToBatch(Batch batch) {
 		
 		String message = "Not Allocated";
 		
@@ -215,36 +217,30 @@ public class AdminDaoImpl implements AdminDao{
 			
 			PreparedStatement ps = conn.prepareStatement("select * from faculty where facultyid = ?");
 			
-			ps.setInt(1, fid);
+			ps.setInt(1, batch.getFacultyId());
 			
 			ResultSet rs = ps.executeQuery();
 			
 			if(rs.next()) {
-				
-				PreparedStatement ps2 = conn.prepareStatement("select * from course where courseId = ?");
-				
-				ps2.setInt(2, cid);
-				
-				ResultSet rs2 = ps2.executeQuery();
-				
-				if(rs2.next()) {
-					
-					PreparedStatement ps3 = conn.prepareStatement("insert into batch(courseid,facultyid) values(?,?)");
-					
-					ps3.setInt(1, cid);
-					ps3.setInt(2, fid);
-					
-					int x = ps3.executeUpdate();
-					
-					if(x > 0) {
-						message = "Allocated Faculty in Batch successfully";
-								
-					}
+									
+				PreparedStatement ps3 = conn.prepareStatement("update batch set facultyid = ? where batchid = ?");
+						
+				ps3.setInt(1, batch.getFacultyId());
+				ps3.setInt(2, batch.getBatchId());
+						
+				int x = ps3.executeUpdate();
+						
+				if(x > 0) {
+					message = "Allocated Faculty in Batch successfully";			
 				}
+				
  			}
+			else {
+				message = "No Faculty Found";
+			}
 			
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (SQLException e) {
+			message = e.getMessage();
 		}
 		
 		return message;
@@ -473,6 +469,147 @@ String message = "Not Updated";
 		return message;
 		
 	}
+
+	@Override
+	public List<Faculty> viewFacutly() throws FacultyException {
+		
+		List<Faculty> faculties = new ArrayList<>();
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement("select * from faculty");
+			
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				int f= rs.getInt("facultyid");
+				String n= rs.getString("facultyname");
+				String a= rs.getString("facultyaddress");
+				String m= rs.getString("mobile");
+				String e= rs.getString("email");
+				String u= rs.getString("username");
+				String p= rs.getString("password");
+				
+				
+			Faculty faculty = new Faculty(f, n, a, m, e, u, p);
+				
+			faculties.add(faculty);
+			
+			}
+		} catch (SQLException e) {
+			throw new FacultyException(e.getMessage());
+		}
+		
+		if(faculties.size() == 0)
+			throw new FacultyException("No Faculty found..");
+
+		return faculties;
+	}
+
+	@Override
+	public List<Batch> viewBatches() throws BatchException {
+		
+		List<Batch> batches = new ArrayList<>();
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement("select * from batch");
+			
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				int b= rs.getInt("batchid");
+				int c= rs.getInt("courseid");
+				int f= rs.getInt("facultyid");
+				int n= rs.getInt("numberofstudent");
+				String t= rs.getString("batchstartdate");
+				String d= rs.getString("duration");
+				
+				
+			Batch batch = new Batch(b, c, f, n, t, d);
+				
+			batches.add(batch);
+			
+			}
+		} catch (SQLException e) {
+			throw new BatchException(e.getMessage());
+		}
+		
+		if(batches.size() == 0)
+			throw new BatchException("No Batch found..");
+
+		return batches;
+	}
+
+	@Override
+	public List<Course> viewCourses() throws CourseException {
+		
+		List<Course> courses = new ArrayList<>();
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement("select * from course");
+			
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				int c= rs.getInt("courseid");
+				String n= rs.getString("coursename");
+				int f= rs.getInt("fee");
+				String d= rs.getString("coursedescription");
+				
+			Course course = new Course(c, n, f, d);
+				
+			courses.add(course);
+			
+			}
+		} catch (SQLException e) {
+			throw new CourseException(e.getMessage());
+		}
+		
+		if(courses.size() == 0)
+			throw new CourseException("No Course found..");
+
+		return courses;
+	}
+
+	@Override
+	public List<CoursePlan> viewCoursePlans() throws CoursePlanException {
+		
+		List<CoursePlan> coursePlans = new ArrayList<>();
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement("select * from courseplan");
+			
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				int p = rs.getInt("planid");
+				int b = rs.getInt("batchid");
+				int n = rs.getInt("daynumber");
+				String t = rs.getString("topic");
+				String s = rs.getString("status");
+				
+			CoursePlan courseplan = new CoursePlan(p, b, n, t, s);
+				
+			coursePlans.add(courseplan);
+			
+			}
+		} catch (SQLException e) {
+			throw new CoursePlanException(e.getMessage());
+		}
+		
+		if(coursePlans.size() == 0)
+			throw new CoursePlanException("No Course Plan found..");
+
+		return coursePlans;
+	}
+
 
 
 
