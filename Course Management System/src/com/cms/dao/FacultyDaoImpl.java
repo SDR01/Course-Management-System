@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.cms.bean.Administrator;
 import com.cms.bean.CoursePlan;
@@ -111,6 +113,40 @@ public class FacultyDaoImpl implements FacultyDao{
 		}
 		
 		return message;
+	}
+	
+	@Override
+	public List<CoursePlan> viewCoursePlans() throws CoursePlanException {
+		
+		List<CoursePlan> coursePlans = new ArrayList<>();
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement("select * from courseplan");
+			
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				int p = rs.getInt("planid");
+				int b = rs.getInt("batchid");
+				int n = rs.getInt("daynumber");
+				String t = rs.getString("topic");
+				String s = rs.getString("status");
+				
+			CoursePlan courseplan = new CoursePlan(p, b, n, t, s);
+				
+			coursePlans.add(courseplan);
+			
+			}
+		} catch (SQLException e) {
+			throw new CoursePlanException(e.getMessage());
+		}
+		
+		if(coursePlans.size() == 0)
+			throw new CoursePlanException("No Course Plan found..");
+
+		return coursePlans;
 	}
 
 }
