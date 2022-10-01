@@ -49,7 +49,15 @@ public class Main {
 			System.out.println(" ");
 			System.out.println("Enter a number 1 or 2 or 3");
 			
-			int login=sc.nextInt();
+			int login = 0;
+			
+			try {
+				login = sc.nextInt();
+			} catch (Exception e) {
+				System.out.println("Enter an integer value");
+				break;
+			}
+			
 			
 			if(login == 1) {
 				
@@ -285,6 +293,9 @@ public class Main {
 			if(login == 3) {
 				System.out.println("Thank you for using our application");
 				break;
+			}
+			if(login != 1 && login != 2 && login != 3) {
+				System.out.println("Wrong Choice, Please select 1 or 2 or 3 only");
 			}
 		}
 	}
