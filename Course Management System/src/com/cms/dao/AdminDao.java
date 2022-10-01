@@ -50,4 +50,8 @@ public interface AdminDao {
 	public CoursePlan viewCoursePlanByID(int planId) throws CoursePlanException;
 	
 	public String updateCoursePlan(CoursePlan coursePlan);
+	
+	public String dayWiseUpdate();
+	
+	
 }

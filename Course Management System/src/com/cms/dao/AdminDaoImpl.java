@@ -610,6 +610,53 @@ String message = "Not Updated";
 		return coursePlans;
 	}
 
+	@Override
+	public String dayWiseUpdate() {
+		
+		String message = "No Update found";
+		
+		try(Connection conn=DBUtil.provideConnection()){
+			
+			PreparedStatement ps=conn.prepareStatement(
+				" select a.batchid, a.facultyid, a.numberofStudent, b.planid, b.topic, b.daynumber, b.status " +
+						" from batch a INNER JOIN coursePlan b where a.batchid = b.batchid"
+			);
+			
+			ResultSet rs=ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				message = "Updated List" ;
+				
+				int bid = rs.getInt("batchid");
+				int fid = rs.getInt("facultyid");
+				int num = rs.getInt("numberOfStudent");
+				int pid = rs.getInt("planid");
+				String t = rs.getString("topic");
+				int day = rs.getInt("daynumber");
+				String s = rs.getString("status");
+				 
+				 
+				System.out.println("Batch ID: " + bid);
+				System.out.println("Faculty ID: " + fid);
+				System.out.println("Number of Students: " + num);
+				System.out.println("Plan ID: " + pid);
+				System.out.println("Topic: " + " " + t);
+				System.out.println("Day Number: " + " " + day);
+				System.out.println("Status: " + s);
+				System.out.println("-------------------------------------------");
+				 
+			 }
+			 
+		}
+		catch(SQLException e) {
+			message = e.getMessage();
+		}
+		
+		
+		return message;
+	}
+
 
 
 
