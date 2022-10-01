@@ -9,7 +9,7 @@ import com.cms.exceptions.FacultyException;
 
 public class LoginFaculty {
 
-	public static void main(String[] args) {
+	public static boolean main(String[] args) {
 		
 		Scanner sc= new Scanner(System.in);
 		
@@ -21,15 +21,22 @@ public class LoginFaculty {
 		
 		FacultyDao fDao = new FacultyDaoImpl();
 		
+		boolean flag = false;
+		
 		try {
 			Faculty faculty = fDao.loginFaculty(username, password);
 			
 			System.out.println("Welcome "+ faculty.getFacultyname());
 			
+			if( faculty.getUsername().equals(username) && faculty.getPassword().equals(password) ) {
+				flag = true;
+			}
+			
 		} catch (FacultyException e) {
 			System.out.println(e.getMessage());
 		}
-
+		
+		return flag;
 	}
 
 }

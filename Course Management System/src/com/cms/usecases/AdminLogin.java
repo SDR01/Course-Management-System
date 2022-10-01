@@ -11,7 +11,7 @@ import com.cms.exceptions.AdminException;
 
 public class AdminLogin {
 	
-	public static void main(String[] args) {
+	public static boolean main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -22,15 +22,23 @@ public class AdminLogin {
 		String password = sc.next();
 		
 		AdminDao aDao = new AdminDaoImpl();
+		
+		boolean flag = false;
 	
 		try {
 			Administrator admin = aDao.loginAdmin(username, password);
 			
-			System.out.println("Welcom "+ username);
+			System.out.println("Welcome "+ username);
+			
+			if( admin.getUsername().equals(username) && admin.getPassword().equals(password) ){
+				flag = true;
+			}
+			
 			
 		} catch (AdminException e) {
 			System.out.println(e.getMessage());
 		}
+		return flag;
 			
 	}
 
