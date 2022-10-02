@@ -1,0 +1,204 @@
+mysql> create database CMS;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use CMS;
+Database changed
+
+mysql> create table Admin( username varchar(24) unique, password varchar(20) );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc admin;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| username | varchar(24) | YES  | UNI | NULL    |       |
+| password | varchar(20) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> create table Faculty( facultyid int unique primary key, facultyname varchar(24), facultyaddress varchar(24), mobile varchar(10) unique, email varchar(20) unique, username varchar(24) unique, password varchar(20) );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc Faculty;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| facultyid      | int         | NO   | PRI | NULL    |       |
+| facultyname    | varchar(24) | YES  |     | NULL    |       |
+| facultyaddress | varchar(24) | YES  |     | NULL    |       |
+| mobile         | varchar(10) | YES  | UNI | NULL    |       |
+| email          | varchar(20) | YES  | UNI | NULL    |       |
+| username       | varchar(24) | YES  | UNI | NULL    |       |
+| password       | varchar(20) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> create table Course( courseid int primary key, courseName varchar(20), fee int, courseDescription varchar(50) );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc course;
++-------------------+-------------+------+-----+---------+-------+
+| Field             | Type        | Null | Key | Default | Extra |
++-------------------+-------------+------+-----+---------+-------+
+| courseid          | int         | NO   | PRI | NULL    |       |
+| courseName        | varchar(20) | YES  |     | NULL    |       |
+| fee               | int         | YES  |     | NULL    |       |
+| courseDescription | varchar(50) | YES  |     | NULL    |       |
++-------------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> create table Batch( batchId int primary key, courseId int, facultyId int, numberofStudent int, batchstartDate date, duration varchar(12),
+    -> foreign key (courseId) references course(courseid),
+    -> foreign key (facultyId) references faculty(facultyid)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc batch;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| batchId         | int         | NO   | PRI | NULL    |       |
+| courseId        | int         | YES  | MUL | NULL    |       |
+| facultyId       | int         | YES  | MUL | NULL    |       |
+| numberofStudent | int         | YES  |     | NULL    |       |
+| batchstartDate  | date        | YES  |     | NULL    |       |
+| duration        | varchar(12) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> create table coursePlan( planId int primary key, batchid int, daynumber int, topic varchar(24), status varchar(15), foreign key (batchid) references batch(batchid) );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc coursePlan;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| planId    | int         | NO   | PRI | NULL    |       |
+| batchid   | int         | YES  | MUL | NULL    |       |
+| daynumber | int         | YES  |     | NULL    |       |
+| topic     | varchar(24) | YES  |     | NULL    |       |
+| status    | varchar(15) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+*********************************************************************************
+
+mysql> insert into admin values('Admin', 'Alpha@01');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from admin;
++----------+----------+
+| username | password |
++----------+----------+
+| Admin    | Alpha@01 |
++----------+----------+
+1 row in set (0.00 sec)
+
+
+Added Entries using Application Use Cases:
+------------------------------------------
+
+mysql> select * from faculty;
++-----------+--------------------+----------------+------------+----------------------+--------------+------------+
+| facultyid | facultyname        | facultyaddress | mobile     | email                | username     | password   |
++-----------+--------------------+----------------+------------+----------------------+--------------+------------+
+|        51 | Acharyas           | Bangalore      | 7894561230 | acharya@cms.com      | Acharya51    | Acharya@51 |
+|        52 | Aman Yadav         | Patna          | 8978988710 | aman.yadav@cms.com   | AmanY52      | amany@52   |
+|        53 | Surya Pratap Singh | Lucknow        | 9998887770 | suryap.s@cms.com     | SinghSurya53 | Surayap@53 |
+|        54 | Divya Gupta        | New Delhi      | 8796541230 | divya.guptha@cms.com | DivyaG54     | GupthaD@54 |
+|        55 | Sanjay Kumar       | Kochi          | 8877991230 | sanjaykumar@cms.com  | SanjayK55    | SKumar@55  |
+|        56 | Sandeep Varma      | Chennai        | 9784861320 | VSandeep@cms.com     | VarmaS56     | SVarma@56  |
++-----------+--------------------+----------------+------------+----------------------+--------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from course;
++----------+------------+-------+---------------------------------------------------+
+| courseid | courseName | fee   | courseDescription                                 |
++----------+------------+-------+---------------------------------------------------+
+|      101 | Java       |  8000 | Basic and Core Java concepts will be covered.     |
+|      201 | Hibernate  |  7000 | You will learn the basics of JPA and Hibernate    |
+|      301 | SQL        |  5000 | Learn to perform CRUD operations with SQL queries |
+|      401 | HTML       |  3000 | learn all HTML tags used to structure HTML pages  |
+|      501 | CSS        |  3000 | Learn many aspects of styling web pages           |
+|      601 | DSA        | 10000 | Learn complete Data Structures and Algorithms     |
++----------+------------+-------+---------------------------------------------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from batch;
++---------+----------+-----------+-----------------+----------------+----------+
+| batchId | courseId | facultyId | numberofStudent | batchstartDate | duration |
++---------+----------+-----------+-----------------+----------------+----------+
+|    2001 |      101 |        51 |              70 | 2022-10-20     | 50-days  |
+|    2002 |      201 |        54 |              35 | 2022-10-05     | 45-days  |
+|    2003 |      301 |        52 |              20 | 2022-10-10     | 30-days  |
+|    2004 |      401 |        55 |              60 | 2022-10-15     | 60-days  |
+|    2005 |      501 |        56 |              40 | 2022-10-03     | 60-days  |
+|    2006 |      601 |        53 |             100 | 2022-10-23     | 90-days  |
++---------+----------+-----------+-----------------+----------------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select * from courseplan;
++--------+---------+-----------+-------------------------------+---------+
+| planId | batchid | daynumber | topic                         | status  |
++--------+---------+-----------+-------------------------------+---------+
+|    907 |    2001 |         1 | Java Introduction             | Pending |
+|    908 |    2001 |         2 | Java Fundamentals             | Pending |
+|    909 |    2001 |         3 | OOPS                          | Pending |
+|    910 |    2001 |         4 | Scanner Class                 | Pending |
+|    911 |    2001 |         5 | Access Modifiers              | Pending |
+|    912 |    2001 |         6 | Packages                      | Pending |
+|    919 |    2002 |         8 | Hibernate                     | Pending |
+|    924 |    2003 |         6 | Joins                         | Pending |
+|    928 |    2004 |         7 | DOM                           | Pending |
+|    935 |    2005 |         9 | Flex                          | Pending |
+|    936 |    2006 |         1 | Introduction to DSA           | Pending |
+|    937 |    2006 |         2 | Data Structures               | Pending |
+|    938 |    2006 |         3 | Algorithms                    | Pending |
+|    939 |    2006 |         4 | Logic Building                | Pending |
+|    940 |    2006 |         5 | Arithmetic Operators          | Pending |
+|    941 |    2006 |         6 | Introduction to Online Judger | Pending |
+|    942 |    2006 |         7 | Strings                       | Pending |
+|    943 |    2006 |         8 | Loops                         | Pending |
+|    944 |    2006 |         9 | Problem Solving using Loops   | Pending |
+|    945 |    2006 |        10 | Arrays                        | Pending |
+|    999 |    2005 |        56 | execute                       | Pending |
++--------+---------+-----------+-------------------------------+---------+
+21 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
