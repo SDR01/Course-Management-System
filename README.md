@@ -7,13 +7,13 @@
 > So create a Automated Course Monitoring System that will keep the records of all the courses, batches, faculties and the day wise update for every batch, which shall help the Faculty Head to maintain the course plan.
 
 ## About Project
-This Course Management System will allow user(administrator, faculty) to perform various tasks that are a necessity to perform their duty. This program will allow the Administrator to create a course, add a course, check availability for batch enrollment, list courses, members, batches and update the database. The functions that are created will allow user to complete their multiple tasks with this one management system.
+This Course Monitoring System will allow user(administrator, faculty) to perform various tasks that are a necessity to perform their duty. This program will allow the Administrator to create a course, add a course, check availability for batch enrollment, list courses, members, batches and update the database. The functions that are created will allow user to complete their multiple tasks with this one management system.
 
 Tech Stack Used
 1. Java - JDBC, DAO Pattern
 2. MySQL
 
-## Functionalities of the Course Management System based on user
+## Functionalities of the Course Monitoring System based on user
 ### Role of Administrator 
 1. Login to his/her account
 2. Create, Update, View Course.
